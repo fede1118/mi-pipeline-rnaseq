@@ -1,3 +1,6 @@
+Quisiera comenzar a crear un repositorio en GitHub que recopile todos mis conocimientos y habilidades en análisis de datos de RNA-seq para crear un pipeline automatizado, desde la descarga de librerías en el SRA hasta la comparación de genes diferencialmente expresados, la creación de gráficos (tipo volcán) y el enriquecimiento de términos GO y KEGG. Quiero que gestiones este proyecto, solicítame los archivos necesarios y vayamos creando un espacio de trabajo (y aprendizaje, ya que hasta ahora ejecuté los comandos línea por línea, no llegué a hacer un script que automatice) para este propósito. Comenzaré dándote el archivo de pipeline utilizado donde se muestran los pasos utilizados para correr el análisis (que fueron ejecutados línea a línea), con la salvedad de que para este análisis las librerías no fueron descargadas del SRA, ya que fueron envíadas directamente por el servicio de secuenciación (hay que agregar el paso de descarga en el script). Quiero que el script ser eficiente en el uso de recursos de cómputo y de espacio de almacenamiento de los archivos, y que me sugieras la menor cantidad posible de código, solo las bases para poder empezar. Nos vamos a detener muchas veces para que me expliques cada uno de los pasos y pueda entender todo el proceso.
+A continuación, te dejo un detalle de la estructura del proyecto:
+
 rnaseq-srna-pipeline/
 ├── README.md                  # Descripción del proyecto, dependencias y uso
 ├── environment.yml            # Entorno Conda con todas las herramientas (fastp, bowtie, samtools, etc.)
@@ -12,13 +15,9 @@ rnaseq-srna-pipeline/
 │   │   ├── 02_filter_rrna.sh
 │   │   ├── 03_alignment_hisat2.sh
 │   │   └── 04_quant_stringtie.sh
-│   ├── srnaseq/               # Módulos específicos de sRNA-seq
-│   │   ├── 01_trim_filter_sizes.sh  # Recorte de adaptadores y filtrado 18-26 nt
-│   │   ├── 02_filter_ncrna.sh       # Remoción de rRNA, tRNA, sn/snoRNA
-│   │   ├── 03_alignment_bowtie.sh   # Mapeo a TAIR10 con parámetros para sRNAs
-│   │   ├── 04_quantify_loci.sh      # Cuantificación (miRNAs maduros + clusters)
-│   │   └── 05_size_profile.sh       # Distribución de tamaños (18 a 26 nt) por réplica
 │   └── R/
 │       ├── deseq2_analysis.R        # Script parametrizado de expresión diferencial
 │       └── plot_srna_profiles.R     # Generación automática de gráficos (PCA, volcano, distribución de tamaños)
+|       └── Enrichment               # Realiza un enriquecimiento de términos GO (BP, MF y CC)
 └── run_srnaseq_pipeline.sh    # Orquestador principal que ejecuta el flujo completo
+
