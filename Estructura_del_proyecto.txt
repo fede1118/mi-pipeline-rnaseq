@@ -1,0 +1,24 @@
+rnaseq-srna-pipeline/
+├── README.md                  # Descripción del proyecto, dependencias y uso
+├── environment.yml            # Entorno Conda con todas las herramientas (fastp, bowtie, samtools, etc.)
+├── config/
+│   ├── config_rnaseq.yaml     # Parámetros para RNA-seq
+│   ├── config_srnaseq.yaml    # Parámetros para sRNA-seq (secuencia adaptador, rango de tamaños)
+│   └── samples_srna.tsv       # Metadatos (muestra, condición/genotipo, réplica, ruta fastq/SRA)
+├── scripts/
+│   ├── 00_download_sra.sh     # Descarga automática con fasterq-dump desde SRA
+│   ├── rnaseq/                # Módulos específicos de RNA-seq (FastQC, Bowtie-rRNA, HISAT2, StringTie)
+│   │   ├── 01_qc_trim.sh
+│   │   ├── 02_filter_rrna.sh
+│   │   ├── 03_alignment_hisat2.sh
+│   │   └── 04_quant_stringtie.sh
+│   ├── srnaseq/               # Módulos específicos de sRNA-seq
+│   │   ├── 01_trim_filter_sizes.sh  # Recorte de adaptadores y filtrado 18-26 nt
+│   │   ├── 02_filter_ncrna.sh       # Remoción de rRNA, tRNA, sn/snoRNA
+│   │   ├── 03_alignment_bowtie.sh   # Mapeo a TAIR10 con parámetros para sRNAs
+│   │   ├── 04_quantify_loci.sh      # Cuantificación (miRNAs maduros + clusters)
+│   │   └── 05_size_profile.sh       # Distribución de tamaños (18 a 26 nt) por réplica
+│   └── R/
+│       ├── deseq2_analysis.R        # Script parametrizado de expresión diferencial
+│       └── plot_srna_profiles.R     # Generación automática de gráficos (PCA, volcano, distribución de tamaños)
+└── run_srnaseq_pipeline.sh    # Orquestador principal que ejecuta el flujo completo
