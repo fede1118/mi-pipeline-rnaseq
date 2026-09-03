@@ -1,0 +1,17 @@
+name: rnaseq_env
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - sra-tools=3.0.3
+  - fastp
+  - pigz
+  - bowtie
+  - samtools=1.17
+  - hisat2=2.2.1
+  - stringtie=2.2.1
+  - r-base
+  - r-tidyverse
+  - bioconductor-deseq2
