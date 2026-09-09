@@ -17,7 +17,7 @@ tail -n +2 "$CONFIG_FILE" | while IFS=$'\t' read -r sample_id srr_id condition r
     
     echo "Starting quality control and filtering for the sample: ${sample_id}"
 
-    # 4. Ejecución de fastp
+    # 4. Execution of fastp
     fastp -i "${RAW_DIR}/${sample_id}_1.fastq.gz" \
           -I "${RAW_DIR}/${sample_id}_2.fastq.gz" \
           -o "${TRIM_DIR}/${sample_id}_1_clean.fastq.gz" \
