@@ -17,11 +17,6 @@ A `references/` directory must be created in the project root containing, at a m
 
 ## 🚀 Quick Start Guide
 
-*Note: Run the utility script to index the reference genome with HISAT2 before proceeding:*
-```bash
-bash scripts/utils/prepare_genome.sh references/genome/TAIR10_chr_all.fas references/genome/genome_idx
-```
-
 ### 1. Clone the repository
 Clone this repository to your local machine and navigate into the directory:
 ```bash
@@ -41,6 +36,11 @@ Place your reference files into the pre-configured directories:
 - Place the rRNA sequences (`.fasta` format) inside `references/rRNA/`.
 - Place the Reference Genome (`.fasta`) and the Gene Annotation (`.gff3` or `.gtf`) inside `references/genome/`.
 
+*Note: Run the utility script to index the reference genome with HISAT2 before proceeding:*
+```bash
+bash scripts/utils/prepare_genome.sh references/genome/TAIR10_chr_all.fas references/genome/genome_idx
+```
+
 *Note: If your rRNA sequences are separated by subunits and/or contain Uracils (U), run the utility script to format and index them before proceeding:*
 ```bash
 bash scripts/utils/prepare_rrna.sh references/rRNA/SSU.fasta references/rRNA/LSU.fasta references/rRNA/unified_rRNA
@@ -48,9 +48,7 @@ bash scripts/utils/prepare_rrna.sh references/rRNA/SSU.fasta references/rRNA/LSU
 
 ## 4. Configure Metadata
 Duplicate the template file and fill in your experimental design:
-```bash
-Duplicate the template file and fill in your experimental design:
-```
+
 Edit `samples_rnaseq.tsv` with your sample IDs, SRA accession numbers, conditions, and replicates.
 
 ## 5. Run the Pipeline
