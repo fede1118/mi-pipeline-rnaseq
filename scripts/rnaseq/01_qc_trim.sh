@@ -1,21 +1,21 @@
 #!/bin/bash
-# Activar el modo estricto para que el script se detenga si hay un error
+# Enable strict mode so that the script stops if an error occurs.
 set -euo pipefail
 
-# 1. Definir rutas de los directorios y archivos
+# 1. Define path variables (assuming the script is executed from the project root)
 CONFIG_FILE="../../config/samples_rnaseq.tsv"
 RAW_DIR="../../fastq"
 TRIM_DIR="../../trimmed_reads"
 REPORT_DIR="../../fastqc_reports"
 
-# 2. Crear los directorios de salida si no existen
+# 2. Create the output directories if they do not exist.
 mkdir -p "$TRIM_DIR" "$REPORT_DIR"
 
-# 3. Bucle para procesar cada muestra descrita en el archivo de configuración
-# tail -n +2 omite la cabecera del archivo TSV
+# 3. Loop to process each sample described in the configuration file.
+# tail -n +2 skips the TSV file header.
 tail -n +2 "$CONFIG_FILE" | while IFS=$'\t' read -r sample_id srr_id condition replicate; do
     
-    echo "Iniciando control de calidad y filtrado para la muestra: ${sample_id}"
+    echo "Starting quality control and filtering for the sample: ${sample_id}"
 
     # 4. Ejecución de fastp
     fastp -i "${RAW_DIR}/${sample_id}_1.fastq.gz" \
@@ -29,7 +29,7 @@ tail -n +2 "$CONFIG_FILE" | while IFS=$'\t' read -r sample_id srr_id condition r
           --detect_adapter_for_pe \
           --thread 4
           
-    echo "Procesamiento finalizado para: ${sample_id}"
+    echo "Quality control and filtering completed for: ${sample_id}"
     echo "---------------------------------------------------"
 
 done

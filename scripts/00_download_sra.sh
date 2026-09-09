@@ -1,53 +1,53 @@
 #!/bin/bash
-# Activar el modo estricto de Bash
+# Enable Bash strict mode
 set -euo pipefail
 
-# 1. Definir variables de rutas (asumiendo que el script se ejecuta desde la raíz del proyecto)
+# 1. Define path variables (assuming the script is executed from the project root)
 CONFIG_FILE="config/samples_example.tsv"
 OUT_DIR="fastq"
 
-# 2. Validación de pre-requisitos
-# Comprobar si el archivo de metadatos existe (-f)
+# 2. Validation of prerequisites
+# Check if the metadata file exists (-f)
 if [[ ! -f "$CONFIG_FILE" ]]; then
-    echo "Error crítico: El archivo de metadatos '$CONFIG_FILE' no existe."
-    echo "Asegúrate de estar ejecutando el script desde la raíz del proyecto (mi-pipeline-rnaseq/)."
+    echo "Critical error: The metadata file '$CONFIG_FILE' does not exist."
+    echo "Make sure you are running the script from the project root (mi-pipeline-rnaseq/)."
     exit 1
 fi
 
-echo "Validación superada: El archivo $CONFIG_FILE fue encontrado."
+echo "Validation passed: The file $CONFIG_FILE was found."
 
-# 3. Crear el directorio de salida si no existe
+# 3. Create the output directory if it does not exist
 mkdir -p "$OUT_DIR"
 
-# 4. Leer el archivo de metadatos línea por línea
-echo "Iniciando lectura de metadatos..."
+# 4. Read the metadata file line by line
+echo "Starting to read metadata..."
 echo "---------------------------------"
 
-# tail -n +2 omite la primera línea (la cabecera)
+# tail -n +2 skips the first line (the header)
 tail -n +2 "$CONFIG_FILE" | while IFS=$'\t' read -r sample_id srr_id condition replicate; do
     
-    echo "Procesando muestra: $sample_id (SRA: $srr_id)"
+    echo "Processing sample: $sample_id (SRA: $srr_id)"
 
-    # 5. Evitar descargas duplicadas
+    # 5. Avoid duplicate downloads
     if [[ -f "${OUT_DIR}/${sample_id}_1.fastq.gz" && -f "${OUT_DIR}/${sample_id}_2.fastq.gz" ]]; then
-        echo "  - Los archivos comprimidos ya existen. Omitiendo descarga."
+        echo "  - The compressed files already exist. Skipping download."
         echo "---------------------------------"
         continue
     fi
 
-    # 6. Descarga con fasterq-dump
-    echo "  - Descargando lecturas desde NCBI..."
+    # 6. Download with fasterq-dump
+    echo "  - Downloading reads from NCBI..."
     fasterq-dump --split-files "$srr_id" -O "$OUT_DIR" -e 4
     
-    # 7. Renombrar y comprimir
-    echo "  - Renombrando y comprimiendo con pigz..."
+    # 7. Rename and compress
+    echo "  - Renaming and compressing with pigz..."
     mv "${OUT_DIR}/${srr_id}_1.fastq" "${OUT_DIR}/${sample_id}_1.fastq"
     mv "${OUT_DIR}/${srr_id}_2.fastq" "${OUT_DIR}/${sample_id}_2.fastq"
     
     pigz -p 4 "${OUT_DIR}/${sample_id}_1.fastq"
     pigz -p 4 "${OUT_DIR}/${sample_id}_2.fastq"
 
-    echo "  - Descarga y compresión completada para $sample_id"
+    echo "  - Download and compression completed for $sample_id"
     echo "---------------------------------"
 done
 
