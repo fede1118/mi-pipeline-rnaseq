@@ -1,0 +1,7 @@
+sample_id	srr_id	condition	replicate
+Col-0_rep1	SRR31420988	Col-0	1
+Col-0_rep2	SRR31420989	Col-0	2
+Col-0_rep3	SRR31420990	Col-0	3
+Mutant_rep1	SRR31420985	Mutant	1
+Mutant_rep2	SRR31420986	Mutant	2
+Mutant_rep3	SRR31420987	Mutant	3
