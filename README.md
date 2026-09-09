@@ -17,6 +17,11 @@ A `references/` directory must be created in the project root containing, at a m
 
 ## 🚀 Quick Start Guide
 
+*Note: Run the utility script to index the reference genome with HISAT2 before proceeding:*
+```bash
+bash scripts/utils/prepare_genome.sh references/genome/TAIR10_chr_all.fas references/genome/genome_idx
+```
+
 ### 1. Clone the repository
 Clone this repository to your local machine and navigate into the directory:
 ```bash
